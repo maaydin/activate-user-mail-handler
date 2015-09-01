@@ -1,0 +1,45 @@
+<atlassian-plugin key="${project.groupId}.${project.artifactId}" name="${project.name}" plugins-version="2">
+    <plugin-info>
+        <description>${project.description}</description>
+        <version>${project.version}</version>
+        <vendor name="${project.organization.name}" url="${project.organization.url}" />
+        <param name="plugin-icon">images/pluginIcon.png</param>
+        <param name="plugin-logo">images/pluginLogo.png</param>
+    </plugin-info>
+
+    <!-- add our i18n resource -->
+    <resource type="i18n" name="i18n" location="activate-user-mail-handler"/>
+    
+    <!-- add our web resources -->
+    <web-resource key="mail-handler-demo-resources" name="mail-handler-demo Web Resources">
+        <dependency>com.atlassian.auiplugin:ajs</dependency>
+
+        <resource type="download" name="images/" location="/images"/>
+
+        <context>mail-handler-demo</context>
+    </web-resource>
+    
+    <!-- publish our component -->
+    <component key="myPluginComponent" class="in.maayd.atlassian.mailhandler.ActivateUserMailHandlerComponent" public="true">
+        <interface>in.maayd.atlassian.mailhandler.IActivateUserMailHandlerComponent</interface>
+    </component>
+
+    <!-- import from the product container -->
+    <component-import key="applicationProperties" interface="com.atlassian.sal.api.ApplicationProperties" />
+
+    <message-handler i18n-name-key="activateusermailhandler.description"
+            key="activateUserMailHandler" class="in.maayd.atlassian.mailhandler.ActivateUserMailHandler"
+            add-edit-url="/secure/admin/ActivateUserMailHandlerDetails!default.jspa"
+            weight="0"/>
+
+    <webwork1 key="actions" name="Actions" class="java.lang.Object">
+        <actions>
+            <action name="in.maayd.atlassian.mailhandler.ActivateUserMailHandlerDetailsWebAction"
+                    alias="ActivateUserMailHandlerDetails"
+                    roles-required="admin">
+                <view name="input">/view/activateUserMailHandlerDetails.vm</view>
+                <view name="securitybreach">/secure/views/securitybreach.jsp</view>
+            </action>
+        </actions>
+    </webwork1>
+</atlassian-plugin>
